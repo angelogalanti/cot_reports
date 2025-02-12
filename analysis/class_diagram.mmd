@@ -1,16 +1,14 @@
 classDiagram
     class DataLoader {
-        -filename: str
         -df: DataFrame
-        +__init__(filename: str)
-        +load_data()
+        +__init__(df: DataFrame)
         +drop_columns_with_patterns(patterns: list)
         +rename_columns(rename_mapping: list)
         +convert_datatypes()
         +preprocess_cot_data()
         +filter_currency_data(currencies_futures: dict)
-        +get_asset_data(asset: str)
-        +load_and_preprocess(currencies_futures: dict, asset: str)
+        +get_asset_data(asset: str, report_type: str)
+        +load_and_preprocess(currencies_futures: dict, asset: str, report_type: str)
     }
 
     class DataProcessor {
@@ -22,19 +20,25 @@ classDiagram
     }
 
     class Plotter {
+        -plot_folder: str
         -asset: str
-        +__init__(asset: str)
-        +plot_asset_manager_positions(df_asset: DataFrame)
-        +plot_price_data(data: DataFrame)
-        +plot_price_and_cot(data: DataFrame, title: str)
+        +__init__(plot_folder: str, asset: str)
+        +plot_asset_manager_positions(df_asset: DataFrame, show_plot: bool)
+        +plot_price_data(data: DataFrame, show_plot: bool)
+        +plot_price_and_cot(data: DataFrame, title: str, show_plot: bool)
+        +plot_operator(data: DataFrame, df_asset: DataFrame, operator: str, title: str, show_plot: bool)
+        +plot_operators(data: DataFrame, df_asset: DataFrame, operators: dict, title: str, show_plot: bool)
     }
 
     class YahooFinanceDownloader {
+        -asset: str
         -ticker: str
-        -year: int
-        -filename: str
+        -price_folder: Path
+        -begin_year: int
+        -end_year: int
+        -filename: Path
         -data: DataFrame
-        +__init__(ticker: str, year: int)
+        +__init__(asset: str, ticker: str, price_folder: Path, begin_year: int, end_year: int)
         +download_data()
         +load_data()
         +preprocess_price_data()

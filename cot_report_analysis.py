@@ -8,7 +8,7 @@ from analysis.data_loader import DataLoader
 from analysis.yahoo_finance_downloader import YahooFinanceDownloader
 from analysis.data_processor import DataProcessor
 from analysis.plotter import Plotter
-from analysis.constants import currencies_futures, asset_list, operators, report_types
+from analysis.constants import currencies_futures, asset_list, operators, report_types, operator_name
 
 single_year = False
 plot_operator = True
@@ -17,8 +17,6 @@ save_df = True
 
 begin_year = 2024
 end_year = 2025
-# operator_name = "Asset Manager"
-operator_name = "Total Reportables"
 operator = operators[operator_name]
 data_folder = Path(__file__).parent / "data"
 cot_folder = data_folder / "cot"

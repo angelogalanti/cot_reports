@@ -16,19 +16,23 @@ currencies_futures = {
     "CL": {"ticker": "CL=F", "name": "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE"},
 }
 
+asset_list = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "NZD", "ZAR", "BRL", "MXN"]
 # asset_list = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "NZD"]
-asset_list = ["GC", "SI", "HG", "CL"]
+# asset_list = ["GC", "SI", "HG", "CL"]
 # asset_list = ["GC"]
 # asset_list = ["USD"]
 
 report_types = {
-    # "TFF": {"type": "traders_in_financial_futures_futopt", "filename": "FinComYY"},
-    "DIS": {"type": "disaggregated_futopt", "filename": "c_year"},
+    "TFF": {"type": "traders_in_financial_futures_futopt", "filename": "FinComYY"},
+    # "DIS": {"type": "disaggregated_futopt", "filename": "c_year"},
     # "CITS": {"type": "supplemental_futopt", "filename": "dea_cit_txt_"},
 }
 
 operators = {
-    "Total Reportables": "TR",
+    # "Total Reportables": "TR",
     "Asset Manager": "AM",
     "Leveraged Money": "LM",
 }
+
+operator_name = "Asset Manager"
+# operator_name = "Total Reportables"
