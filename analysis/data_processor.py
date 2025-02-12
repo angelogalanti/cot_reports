@@ -6,7 +6,7 @@ class DataProcessor:
         self.cot_data = cot_data
         self.price_data = price_data
 
-    def merge_data(self):
+    def merge_data(self) -> pd.DataFrame:
         # First ensure the index of both dataframes is a datetime index
         self.cot_data.index = pd.to_datetime(self.cot_data.index)
         self.price_data.index = pd.to_datetime(self.price_data.index)

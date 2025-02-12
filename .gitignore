@@ -1,5 +1,6 @@
 data/
 plots/
+output/
 
 *.egg-info
 __pycache__/

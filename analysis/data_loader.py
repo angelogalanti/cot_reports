@@ -44,7 +44,9 @@ class DataLoader:
             "Contract_Units",
             "FutOnly_or_Combined",
             "Open_Interest_",
-        ]  # , 'Positions_']
+            "Prod_Merc_",
+            "Swap_",
+        ]
 
         names = [
             {"Market_and_Exchange_Names": "Market"},
@@ -53,14 +55,14 @@ class DataLoader:
             {"Asset_Mgr_Positions_Short_All": "AM_S"},
             {"Lev_Money_Positions_Long_All": "LM_L"},
             {"Lev_Money_Positions_Short_All": "LM_S"},
-            {"Tot_Rept_Positions_Long_All": "TR_L"},
-            {"Tot_Rept_Positions_Short_All": "TR_S"},
             {"Change_in_Asset_Mgr_Long_All": "Ch_AM_L"},
             {"Change_in_Asset_Mgr_Short_All": "Ch_AM_S"},
             {"Change_in_Lev_Money_Long_All": "Ch_LM_L"},
             {"Change_in_Lev_Money_Short_All": "Ch_LM_S"},
             {"Change_in_Tot_Rept_Long_All": "Ch_TR_L"},
             {"Change_in_Tot_Rept_Short_All": "Ch_TR_S"},
+            {"Tot_Rept_Positions_Long_All": "TR_L"},
+            {"Tot_Rept_Positions_Short_All": "TR_S"},
         ]
 
         self.drop_columns_with_patterns(contains)
@@ -80,7 +82,7 @@ class DataLoader:
         self.df = self.df[self.df["Market"].isin(currencies_futures.keys())]
         return self
 
-    def get_asset_data(self, asset):
+    def get_asset_data(self, asset: str, report_type: str):
         # create a copy of the dataframe for the asset
         df_asset = self.df.loc[self.df["Market"] == asset].copy()
 
@@ -90,15 +92,21 @@ class DataLoader:
         # use date as index
         df_asset.set_index("Date", inplace=True)
 
-        # keep only Asset Manager and Leveraged Money data: : columns 'AM_L', 'AM_S', 'Ch_AM_L', 'Ch_AM_S' and 'LM_L', 'LM_S', 'Ch_LM_L', 'Ch_LM_S'
-        df_asset = df_asset[["AM_L", "AM_S", "Ch_AM_L", "Ch_AM_S", "LM_L", "LM_S", "Ch_LM_L", "Ch_LM_S"]]
+        if report_type == "DIS":
+            df_asset = df_asset[["TR_L", "TR_S", "Ch_TR_L", "Ch_TR_S"]]
+            # add a column 'TR_Net' that is the difference between 'TR_L' and 'TR_S'
+            df_asset["TR_Net"] = df_asset["TR_L"] - df_asset["TR_S"]
+        elif report_type == "TFF":
+            df_asset = df_asset[["AM_L", "AM_S", "Ch_AM_L", "Ch_AM_S", "LM_L", "LM_S", "Ch_LM_L", "Ch_LM_S"]]
+            # add a column 'AM_Net' that is the difference between 'AM_L' and 'AM_S'
+            df_asset["AM_Net"] = df_asset["AM_L"] - df_asset["AM_S"]
+            df_asset["LM_Net"] = df_asset["LM_L"] - df_asset["LM_S"]
+        else:
+            raise ValueError(f"Unknown report type: {report_type}")
 
-        # add a column 'AM_Net' that is the difference between 'AM_L' and 'AM_S'
-        df_asset["AM_Net"] = df_asset["AM_L"] - df_asset["AM_S"]
-        df_asset["LM_Net"] = df_asset["LM_L"] - df_asset["LM_S"]
         return df_asset
 
-    def load_and_preprocess(self, currencies_futures, asset):
+    def load_and_preprocess(self, currencies_futures: dict, asset: str, report_type: str):
         self.preprocess_cot_data().filter_currency_data(currencies_futures)
-        df_asset = self.get_asset_data(asset)
+        df_asset = self.get_asset_data(asset, report_type)
         return df_asset

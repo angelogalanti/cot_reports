@@ -93,7 +93,7 @@ class Plotter:
         # in the second plot the change in operator positions
         # in the third plot the price and operator net positions
 
-        fig, axs = plt.subplots(3, 1, figsize=(15, 15))
+        fig, axs = plt.subplots(3, 1, figsize=(20, 15))
         fig.suptitle(title)
 
         # First subplot: Operator Positions
@@ -123,12 +123,13 @@ class Plotter:
         axs[2].plot(data.index, data["Close"], color=color, label="Close")
         axs[2].tick_params(axis="y", labelcolor=color)
         axs[2].legend(loc="upper left")
+        axs[2].set_title(f"{self.asset} Close Price and {operator} Net Positions")
+        axs[2].grid()
         color = "tab:blue"
         ax2.set_ylabel(f"{operator}_Net", color=color)
         ax2.plot(data.index, data[f"{operator}_Net"], color=color, label=f"{operator}_Net")
         ax2.tick_params(axis="y", labelcolor=color)
         ax2.legend(loc="upper right")
-        axs[2].set_title(f"{self.asset} Close Price and {operator} Net Positions")
 
         fig.tight_layout()
         plt.savefig(os.path.join(self.plot_folder, f"{self.asset}_{operator}_positions.png"))
@@ -144,7 +145,7 @@ class Plotter:
 
         num_operators = len(operators)
 
-        fig, axs = plt.subplots(3, num_operators, figsize=(15 * num_operators, 15))
+        fig, axs = plt.subplots(3, num_operators, figsize=(20 * num_operators, 15))
         fig.suptitle(title)
 
         for i, operator in enumerate(operators):
@@ -176,19 +177,21 @@ class Plotter:
             axs[2, i].plot(data.index, data["Close"], color=color, label="Close")
             axs[2, i].tick_params(axis="y", labelcolor=color)
             axs[2, i].legend(loc="upper left")
+            axs[2, i].set_title(f"{self.asset} Close Price and {operator} Net Positions")
+            axs[2, i].grid()
             color = "tab:blue"
             ax2.set_ylabel(f"{operator}_Net", color=color)
             ax2.plot(data.index, data[f"{operator}_Net"], color=color, label=f"{operator}_Net")
             ax2.tick_params(axis="y", labelcolor=color)
             ax2.legend(loc="upper right")
-            axs[2, i].set_title(f"{self.asset} Close Price and {operator} Net Positions")
 
-        fig.tight_layout(rect=[0, 0.03, 1, 0.95])
-        # Rotate x-axis tick labels for all subplots to reduce tightness
-        for ax in axs.flat:
-            ax.xaxis.set_major_locator(mdates.WeekdayLocator())
-            ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d"))
-            # plt.setp(ax.get_xticklabels(), rotation=45)
+        if False:
+            fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+            # Rotate x-axis tick labels for all subplots to reduce tightness
+            for ax in axs.flat:
+                ax.xaxis.set_major_locator(mdates.WeekdayLocator())
+                ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d"))
+            plt.setp(ax.get_xticklabels(), rotation=45)
         plt.savefig(os.path.join(self.plot_folder, f"{self.asset}_operators_positions.png"))
         if show_plot:
             plt.show()

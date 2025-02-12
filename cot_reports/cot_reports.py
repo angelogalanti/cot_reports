@@ -177,7 +177,7 @@ def cot_year(year=2020, cot_report_type="legacy_fut", store_txt=True, verbose=Tr
             print("Stored the file", txt, "in the working directory.")
         # rename txt file to filename
         os.rename(txt, filename)
-        folder = "data"
+        folder = "data/cot/"
         # move in data folder
         if not os.path.exists(folder):
             os.makedirs(folder)
