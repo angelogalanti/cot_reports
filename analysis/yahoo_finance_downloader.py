@@ -1,13 +1,15 @@
 import yfinance as yf
 import pandas as pd
 import os
+from pathlib import Path
 
 
 class YahooFinanceDownloader:
-    def __init__(self, ticker, year):
+    def __init__(self, asset, ticker, year):
+        self.asset = asset
         self.ticker = ticker
         self.year = year
-        self.filename = f"{ticker.replace('=', '_')}_{year}_daily_data.csv"
+        self.filename = Path(__file__).parent.parent / "data" / f"{asset}_{year}_daily_data.csv"
         self.data = None
 
     def download_data(self):

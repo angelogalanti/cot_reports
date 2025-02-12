@@ -11,8 +11,8 @@ class DataProcessor:
         self.cot_data.index = pd.to_datetime(self.cot_data.index)
         self.price_data.index = pd.to_datetime(self.price_data.index)
 
-        # drop all except AM_net from df_asset
-        self.cot_data.drop(columns=["AM_L", "AM_S", "Ch_AM_L", "Ch_AM_S"], inplace=True)
+        # # drop all except AM_net from df_asset
+        # self.cot_data.drop(columns=["AM_L", "AM_S", "Ch_AM_L", "Ch_AM_S"], inplace=True)
 
         # add df_asset to data dataframe, forwards fill the NaN values
         self.price_data = self.price_data.join(self.cot_data, how="left")

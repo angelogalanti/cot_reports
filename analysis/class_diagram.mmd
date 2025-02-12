@@ -1,0 +1,47 @@
+classDiagram
+    class DataLoader {
+        -filename: str
+        -df: DataFrame
+        +__init__(filename: str)
+        +load_data()
+        +drop_columns_with_patterns(patterns: list)
+        +rename_columns(rename_mapping: list)
+        +convert_datatypes()
+        +preprocess_cot_data()
+        +filter_currency_data(currencies_futures: dict)
+        +get_asset_data(asset: str)
+        +load_and_preprocess(currencies_futures: dict, asset: str)
+    }
+
+    class DataProcessor {
+        -cot_data: DataFrame
+        -price_data: DataFrame
+        +__init__(cot_data: DataFrame, price_data: DataFrame)
+        +merge_data()
+        +shift_cot_data(shift_days: int)
+    }
+
+    class Plotter {
+        -asset: str
+        +__init__(asset: str)
+        +plot_asset_manager_positions(df_asset: DataFrame)
+        +plot_price_data(data: DataFrame)
+        +plot_price_and_cot(data: DataFrame, title: str)
+    }
+
+    class YahooFinanceDownloader {
+        -ticker: str
+        -year: int
+        -filename: str
+        -data: DataFrame
+        +__init__(ticker: str, year: int)
+        +download_data()
+        +load_data()
+        +preprocess_price_data()
+        +load_and_preprocess()
+    }
+
+    DataProcessor ..> DataLoader: uses
+    DataProcessor ..> YahooFinanceDownloader: uses
+    Plotter ..> DataProcessor: uses
+    DataProcessor --> "1" Plotter: creates and uses

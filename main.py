@@ -6,7 +6,8 @@ import cot_reports as cot
 # # cot_hist() downloads the historical bulk file for the specified report type, in this example the Traders in Financial Futures Futures-and-Options Combined report. Returns the data as dataframe.
 
 # Example: cot_year()
-df = cot.cot_year(year=2020, cot_report_type="traders_in_financial_futures_fut")
+# df = cot.cot_year(year=2025, cot_report_type="traders_in_financial_futures_fut")
+df = cot.cot_year(year=2025, cot_report_type="traders_in_financial_futures_futopt")
 # cot_year() downloads the single year file of the specified report type and year. Returns the data as dataframe.
 print(df.head())
 

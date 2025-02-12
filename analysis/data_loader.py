@@ -1,10 +1,9 @@
 import pandas as pd
 import numpy as np
-from .constants import currencies_futures
 
 
 class DataLoader:
-    def __init__(self, filename="FinFutYY.txt"):
+    def __init__(self, filename):
         self.filename = filename
         self.df = None
 
@@ -78,6 +77,8 @@ class DataLoader:
     def filter_currency_data(self, currencies_futures):
         # Rename the markets to the currency codes
         for key, value in currencies_futures.items():
+            if value["name"] not in self.df["Market"].values:
+                print(f"Warning: Pattern '{value['name']}' not found in the data.")
             self.df["Market"] = self.df["Market"].replace(value["name"], key)
 
         # Keep only the rows with currency futures
@@ -94,11 +95,12 @@ class DataLoader:
         # use date as index
         df_asset.set_index("Date", inplace=True)
 
-        # keep only Asset Manager data: columns 'AM_L', 'AM_S', 'Ch_AM_L', 'Ch_AM_S'
-        df_asset = df_asset[["AM_L", "AM_S", "Ch_AM_L", "Ch_AM_S"]]
+        # keep only Asset Manager and Leveraged Money data: : columns 'AM_L', 'AM_S', 'Ch_AM_L', 'Ch_AM_S' and 'LM_L', 'LM_S', 'Ch_LM_L', 'Ch_LM_S'
+        df_asset = df_asset[["AM_L", "AM_S", "Ch_AM_L", "Ch_AM_S", "LM_L", "LM_S", "Ch_LM_L", "Ch_LM_S"]]
 
         # add a column 'AM_Net' that is the difference between 'AM_L' and 'AM_S'
         df_asset["AM_Net"] = df_asset["AM_L"] - df_asset["AM_S"]
+        df_asset["LM_Net"] = df_asset["LM_L"] - df_asset["LM_S"]
         return df_asset
 
     def load_and_preprocess(self, currencies_futures, asset):
