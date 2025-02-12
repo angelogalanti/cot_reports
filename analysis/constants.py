@@ -8,10 +8,17 @@ currencies_futures = {
     "USD": {"ticker": "DX=F", "name": "USD INDEX - ICE FUTURES U.S."},
 }
 
-asset_list = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF"]
-asset_list = ["USD"]
+# asset_list = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF"]
+asset_list = ["CAD", "CHF"]
+# asset_list = ["USD"]
+
+report_types = {
+    # "Disaggregated": {"type": "disaggregated_futopt", "filename": "c_year"},
+    "TFF": {"type": "traders_in_financial_futures_futopt", "filename": "FinComYY"},
+}
 
 operators = {
+    # "Managed money": "MM",
     "Asset Manager": "AM",
     "Leveraged Money": "LM",
 }

@@ -3,13 +3,8 @@ import numpy as np
 
 
 class DataLoader:
-    def __init__(self, filename):
-        self.filename = filename
-        self.df = None
-
-    def load_data(self):
-        self.df = pd.read_csv(self.filename)
-        return self
+    def __init__(self, df: pd.DataFrame):
+        self.df = df
 
     def drop_columns_with_patterns(self, patterns):
         """Drop columns that contain any of the specified patterns."""
@@ -77,8 +72,8 @@ class DataLoader:
     def filter_currency_data(self, currencies_futures):
         # Rename the markets to the currency codes
         for key, value in currencies_futures.items():
-            if value["name"] not in self.df["Market"].values:
-                print(f"Warning: Pattern '{value['name']}' not found in the data.")
+            # if value["name"] not in self.df["Market"].values:
+            #     print(f"Warning: Pattern '{value['name']}' not found in the data.")
             self.df["Market"] = self.df["Market"].replace(value["name"], key)
 
         # Keep only the rows with currency futures
@@ -104,6 +99,6 @@ class DataLoader:
         return df_asset
 
     def load_and_preprocess(self, currencies_futures, asset):
-        self.load_data().preprocess_cot_data().filter_currency_data(currencies_futures)
+        self.preprocess_cot_data().filter_currency_data(currencies_futures)
         df_asset = self.get_asset_data(asset)
         return df_asset

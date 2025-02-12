@@ -93,7 +93,7 @@ class Plotter:
         # in the second plot the change in operator positions
         # in the third plot the price and operator net positions
 
-        fig, axs = plt.subplots(3, 1, figsize=(10, 15))
+        fig, axs = plt.subplots(3, 1, figsize=(15, 15))
         fig.suptitle(title)
 
         # First subplot: Operator Positions
@@ -144,7 +144,7 @@ class Plotter:
 
         num_operators = len(operators)
 
-        fig, axs = plt.subplots(3, num_operators, figsize=(5 * num_operators, 15))
+        fig, axs = plt.subplots(3, num_operators, figsize=(15 * num_operators, 15))
         fig.suptitle(title)
 
         for i, operator in enumerate(operators):

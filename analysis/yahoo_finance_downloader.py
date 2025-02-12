@@ -5,11 +5,12 @@ from pathlib import Path
 
 
 class YahooFinanceDownloader:
-    def __init__(self, asset, ticker, year):
+    def __init__(self, asset, ticker, begin_year, end_year):
         self.asset = asset
         self.ticker = ticker
-        self.year = year
-        self.filename = Path(__file__).parent.parent / "data" / f"{asset}_{year}_daily_data.csv"
+        self.begin_year = begin_year
+        self.end_year = end_year
+        self.filename = Path(__file__).parent.parent / "data" / f"{asset}_{begin_year}_{end_year}_daily_data.csv"
         self.data = None
 
     def download_data(self):
@@ -17,7 +18,7 @@ class YahooFinanceDownloader:
             print(f"The file {self.filename} already exists.")
         else:
             # get the data
-            self.data = yf.download(self.ticker, start=f"{self.year}-01-01", end=f"{self.year}-12-31")
+            self.data = yf.download(self.ticker, start=f"{self.begin_year}-01-01", end=f"{self.end_year}-12-31")
             # save the data to a file
             self.data.to_csv(self.filename)
             print(f"The file {self.filename} has been created.")
